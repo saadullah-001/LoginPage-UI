@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,213 +7,198 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Login Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LoginPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  var Email = TextEditingController();
-  var Password = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  // Use lowercase for variable names (CamelCase)
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _isObscure = true; // State to toggle password visibility
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // Scaffold allows us to stack the background behind everything
     return Scaffold(
-        appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-        ),
-        body: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('Asset/download .jpg'),
-              fit: BoxFit.cover,
-            )),
-            child: Column(children: [
-              Container(
-                  margin: EdgeInsets.only(top: 200),
-                  child: Row(
+      body: Stack(
+        children: [
+          // 1. Background Image (Full Screen)
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                // Make sure this file exists in your assets folder!
+                image: AssetImage('Asset/download .jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          // 2. Dark Overlay (Makes text easier to read)
+          Container(
+            color: Colors.black.withOpacity(0.4),
+          ),
+
+          // 3. The Login Form (Centered & Scrollable)
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo / Title
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("LOG",
                           style: TextStyle(
-                              fontFamily: 'Arial',
-                              fontSize: 28,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
                               color: Colors.white)),
                       Text("in",
                           style: TextStyle(
-                              fontFamily: 'Arial',
-                              fontSize: 28,
+                              fontSize: 32,
                               fontWeight: FontWeight.w400,
                               color: Colors.deepOrange)),
                     ],
-                  )),
-              Container(
-                  margin: EdgeInsets.only(
-                      left: 20, right: 20, top: 150, bottom: 200),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(11),
-                    color: Colors.white.withOpacity(0.3),
                   ),
-                  child: Padding(
-                      padding: EdgeInsets.all(35),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextField(
-                              controller: Email,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                hintText: "Enter E-mail",
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: BorderSide(
-                                      width: 2,
-                                      color: const Color.fromARGB(
-                                          223, 255, 145, 0)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide:
-                                      BorderSide(width: 2, color: Colors.white),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: BorderSide(
-                                      width: 2, color: Colors.black45),
-                                ),
-                              )),
-                          Container(height: 11),
-                          TextField(
-                              controller: Password,
-                              obscuringCharacter: "*",
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  icon: Icon(Icons.remove_red_eye),
-                                  onPressed: () {
-                                    print("Pressed");
-                                  },
-                                ),
-                                hintText: "Enter Password",
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: BorderSide(
-                                      width: 2,
-                                      color: const Color.fromARGB(
-                                          223, 255, 145, 0)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide:
-                                      BorderSide(width: 2, color: Colors.white),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: BorderSide(
-                                      width: 2, color: Colors.black45),
-                                ),
-                              )),
-                          Container(height: 11),
-                          SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.deepOrange
-                                          .withOpacity(
-                                              0.6), // Set the button's background color
+                  const SizedBox(height: 40),
 
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(11))),
-                                  onPressed: () {
-                                    String pass = Password.text;
-                                    String email = Email.text;
+                  // Glassmorphism Container
+                  Container(
+                    padding: const EdgeInsets.all(30),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white.withOpacity(0.2), // Glass effect
+                      border: Border.all(color: Colors.white.withOpacity(0.5)),
+                    ),
+                    child: Column(
+                      children: [
+                        // Email Field
+                        TextField(
+                          controller: emailController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration:
+                              _inputDecoration("Enter E-mail", Icons.email),
+                        ),
+                        const SizedBox(height: 20),
 
-                                    print("Email: $email, Password: $pass");
-                                  },
-                                  child: Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        color: const Color.fromARGB(
-                                            216, 255, 255, 255),
-                                        fontSize: 18),
-                                  )))
-                        ],
-                      ))),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text("Don't have an account? "),
-                InkWell(
-                  child: Text("Sign Up", style: TextStyle(color: Colors.white)),
-                )
-              ]),
-            ])));
+                        // Password Field
+                        TextField(
+                          controller: passwordController,
+                          obscureText: _isObscure,
+                          style: const TextStyle(color: Colors.white),
+                          decoration:
+                              _inputDecoration("Enter Password", Icons.lock)
+                                  .copyWith(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.white70,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure = !_isObscure;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+
+                        // Login Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.deepOrange,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                            onPressed: () {
+                              print("Email: ${emailController.text}");
+                              print("Password: ${passwordController.text}");
+                            },
+                            child: const Text(
+                              "Login",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Sign Up Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print("Navigate to Sign Up");
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to keep code clean
+  InputDecoration _inputDecoration(String hint, IconData icon) {
+    return InputDecoration(
+      prefixIcon: Icon(icon, color: Colors.white70),
+      hintText: hint,
+      hintStyle: const TextStyle(color: Colors.white60),
+      filled: true,
+      fillColor: Colors.black12,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.white38),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.deepOrange, width: 2),
+      ),
+    );
   }
 }
